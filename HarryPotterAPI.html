@@ -5,8 +5,194 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-</head>
-<body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Acme|Courgette&display=swap" rel="stylesheet">
+  </head>
+
+<style>
+body{
+  background-image: no-repeat;
+  background-size:cover;
+}
+
+
+
+
+.defaultbanner{ background-image: url("https://i.pinimg.com/originals/dc/ed/7b/dced7b0c2ab70354c2cb04a9064ef381.jpg");
+
+}
+
+.Gryffindor{ background-image: url("https://wallpaperplay.com/walls/full/e/7/8/176464.jpg");
+
+}
+
+.Slytherin{ background-image: url("https://wallpaperplay.com/walls/full/8/c/9/3137.jpg");
+
+}
+
+.Hufflepuff{ background-image: url("https://wallpapercave.com/wp/wp1958756.jpg");
+
+}
+
+.Ravenclaw{ background-image: url("https://www.barraques.cat/pngfile/big/28-285004_free-download-ravenclaw-background-id-harry-potter-ravenclaw.jpg");
+
+}
+header, .nav {
+  background-color: #F1F1F1;
+  opacity: .8;
+  text-align: center;
+  padding: 20px;
+  height: 50px;
+}
+.header{
+  font-family: 'Courgette', cursive;
+  font-size: 40px;
+}
+/* The navbar container */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Links - change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: calc(100%/3- 0px);
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other on smaller screens (600px wide or less) */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+.sortingimg{
+    border: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -webkit-box-shadow: none;
+  height: 50px;
+  width: 50px;
+}
+#houseinfo{
+  border: 2px solid black;
+  height:200px;
+  width:200px;
+  background-color: #F1F1F1;
+  opacity: .8;
+}
+
+
+</style>
+
+
+<body class = "defaultbanner">
+  <header class="header">Harry Potter House Sorter</header>
+  
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+
+<div>
+    <button id = SortingHat class = "ColorChange">
+        <img class = "sortingimg" src= "C:\Users\kiled\Documents\_Midlandcodeacademy\Harry Potter Website\kisspng-sorting-hat-harry-potter-and-the-deathly-hallows-c-5b0939d6c8e2d5.4046245615273312868228.png" alt="sorting hat">
+        Get Sorted
+    </button>   
+</div>
     
+<div id="houseinfo"></div>
+
+<div></div>
+
+<div></div>
+
+
+
+<script>
+   const key = "key=$2a$10$jT8D/mw9h/stkDHeAHXXDe1TzH8wtNjRv2pjOWhRedwu5SlxMJTeG}";
+   const API = "https://www.potterapi.com/v1/";
+
+    document.getElementById('SortingHat').addEventListener("click", function(){
+        console.log("Sorting Button Pressed.");
+        
+        Banner("sortingHat"); 
+
+    })
+
+   function Banner(SearchParameter){
+     fetch(`${API}sortingHat`)
+     .then(function (response) {
+                    console.log(response);
+                    if (!response.ok) {
+                        console.log(response.status)
+                    }
+                    return response.json();
+                })
+                .then(function (house){
+                    console.log(house);
+                    document.getElementsByTagName("body")[0].classList.add(house);
+                    Classmates(house)
+                })
+        }
+   
+        function Classmates(house){
+            // https://www.potterapi.com/v1/characters?key=$2a$10$jT8D/mw9h/stkDHeAHXXDe1TzH8wtNjRv2pjOWhRedwu5SlxMJTeG&house=Ravenclaw
+     fetch(`${API}characters?${key}&house=${house}`)
+     .then(function (response) {
+                    console.log(response);
+                    if (!response.ok) {
+                        console.log(response.status)
+                    }
+                    return response.json();
+                })
+                .then(function (characters){
+                    console.log(characters);
+
+                })
+        }
+
+   
+
+
+
+   
+</script>
+
 </body>
 </html>
