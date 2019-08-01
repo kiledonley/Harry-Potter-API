@@ -9,14 +9,15 @@
     <link href="https://fonts.googleapis.com/css?family=Acme|Courgette&display=swap" rel="stylesheet">
   </head>
 
-<style>
+<style> 
+
+* {
+  font-family: 'Courgette', cursive;}
+
 body{
   background-image: no-repeat;
   background-size:cover;
 }
-
-
-
 
 .defaultbanner{ background-image: url("https://i.pinimg.com/originals/dc/ed/7b/dced7b0c2ab70354c2cb04a9064ef381.jpg");
 
@@ -41,9 +42,10 @@ header, .nav {
   background-color: #F1F1F1;
   opacity: .8;
   text-align: center;
-  padding: 20px;
   height: 50px;
 }
+
+
 .header{
   font-family: 'Courgette', cursive;
   font-size: 40px;
@@ -99,15 +101,31 @@ header, .nav {
   height: 50px;
   width: 50px;
 }
-#houseinfo{
+.houseinfo{
+    position: relative;
+  left: 200px;
   border: 2px solid black;
-  height:200px;
-  width:200px;
-  background-color: #F1F1F1;
-  opacity: .8;
+  width: 325px;
+  max-height:700px;
+  background-image: url("https://i.pinimg.com/originals/04/fd/c1/04fdc124d0ef65ce49a87591d0a73b2f.jpg");
+  opacity: 1.0;
+  overflow: scroll;
+  align-content: center;
+  font-size: 20px;
+  text-align: center;
 }
 
+.redText{
+    color: red;
+}
 
+.biggerfont{
+  font-size: 35px;
+}
+@media (max-width: 600px){
+  
+header{color: red;}
+}
 </style>
 
 
@@ -116,18 +134,21 @@ header, .nav {
   
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Active</a>
+          <a class="nav-link active" href="#">Sorting Hat</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Spells</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Ollivander's</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Whomping Willow</a>
         </li>
       </ul>
+      <noscript>
+        <p>Please enable JavaScript to use this page!</p>
+      </noscript>
 
 <div>
     <button id = SortingHat class = "ColorChange">
@@ -145,34 +166,32 @@ header, .nav {
 
 
 <script>
-   const key = "key=$2a$10$jT8D/mw9h/stkDHeAHXXDe1TzH8wtNjRv2pjOWhRedwu5SlxMJTeG}";
+   const key = "key=$2a$10$jT8D/mw9h/stkDHeAHXXDe1TzH8wtNjRv2pjOWhRedwu5SlxMJTeG";
    const API = "https://www.potterapi.com/v1/";
 
     document.getElementById('SortingHat').addEventListener("click", function(){
         console.log("Sorting Button Pressed.");
-        
-        Banner("sortingHat"); 
+
+        Banner("sortingHat");
 
     })
 
    function Banner(SearchParameter){
      fetch(`${API}sortingHat`)
      .then(function (response) {
-                    console.log(response);
                     if (!response.ok) {
-                        console.log(response.status)
                     }
                     return response.json();
                 })
                 .then(function (house){
-                    console.log(house);
                     document.getElementsByTagName("body")[0].classList.add(house);
                     Classmates(house)
                 })
         }
    
         function Classmates(house){
-            // https://www.potterapi.com/v1/characters?key=$2a$10$jT8D/mw9h/stkDHeAHXXDe1TzH8wtNjRv2pjOWhRedwu5SlxMJTeG&house=Ravenclaw
+            console.log(house);
+
      fetch(`${API}characters?${key}&house=${house}`)
      .then(function (response) {
                     console.log(response);
@@ -181,9 +200,29 @@ header, .nav {
                     }
                     return response.json();
                 })
-                .then(function (characters){
-                    console.log(characters);
+                .then(function(characters){
+                    
+                    var characterfill = `<p class = "biggerfont"> Housemates </p>`;
+                    var pureblood = ""
 
+            
+                    document.getElementById("houseinfo").classList.add("houseinfo");
+                    
+
+                    for(i = 0;  i < characters.length; i++){
+                      console.log(characters[i].bloodStatus);
+
+                        if(house == "Slytherin" && characters[i].bloodStatus == "pure-blood"){pureblood = "redText"} else(pureblood = "")
+                        document.getElementById("houseinfo").innerHTML =
+                                characterfill +=`<p class = ${pureblood}>${characters[i].name}</p>`;
+                                console.log(i,characters.bloodStatus);
+                    }
+                                if(house == "Slytherin"){
+                                document.getElementById("houseinfo").innerHTML =
+                                characterfill +=`<p class = redText> Red Denotes Pure-Blood status</p>`;
+                                }
+                    
+                
                 })
         }
 
